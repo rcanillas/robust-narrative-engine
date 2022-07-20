@@ -4,8 +4,12 @@ ch_quality = ["considerate", "kind", "brave", "smart", "loyal"]
 incompatible_traits_map = {"considerate": ["bloodthirsty"], "smart": ["dumb"], "kind": ["bloodthirsty"]}
 ch_flaw = ["dumb", "bloodthirsty", "obnoxious", "know-it-all", "lunatic"]
 ch_profession = ["mercenary", "peasant", "blacksmith", "vagabond", "assassin", "barbarian"]
-ch_goal = ["kill the king", "steal the Amulet of Destiny", "restore the balance", "settle in peace"]
-ch_reason = ["forget $pr1 past mistakes",
+ch_goal = ["kill the king",
+           "steal the Amulet of Destiny",
+           "get magical powers",
+           "restore the balance",
+           "settle in peace"]
+ch_reason = ["repair $pr1 past mistakes",
              "become the hero of common folks",
              "achieve $pr1 destiny",
              "avoid a prophecy",
@@ -14,7 +18,8 @@ ch_reason = ["forget $pr1 past mistakes",
 incompatible_reasons_map = {"settle in peace": ["become the hero of common folks",
                                                 "be rich",
                                                 "avenge $pr1 family",
-                                                "achieve $pr1 destiny"]}
+                                                "achieve $pr1 destiny"],
+                            }
 ch_sex = ["male", "female", "fluid"]
 pronouns_map = {"male": ("he", "his", "him"), "female": ("she", "her", "her"), "fluid": ("they", "their", "them")}
 
