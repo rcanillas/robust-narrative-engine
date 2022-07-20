@@ -67,7 +67,33 @@ def generate_story_sentence(seed=0):
     return story
 
 
+# Normal scene decomposition
+"""
+    First, protagonist do something to achieve scene goal
+    Then, antagonist react by doing something to prevent goal to be achieved
+    Finally protagonist achieve/fail their goal based on decision function, but lose/gain minor outcome
+"""
+# Intro scene decomposition
+"""
+    First, protagonist do something normal to them
+    Then, an event unsettle the balance
+    Finally protagonist starts the adventure 
+"""
+
+# Story decomposition
+"""
+    Scene 1 -> Intro scene
+    Scene 2 -> Outcome Success or Failure
+    Scene 3 -> Inverted Outcome from previous scene
+    Scene 4 -> Crucible scene
+    Scene 5 -> Outcome Success of Failure
+    Scene 6 -> Inverted Outcome from previous scene
+    Scene 7 -> Final scene
+"""
+
 if __name__ == '__main__':
     for rn_seed in range(0, 6):
         gen_story = generate_story_sentence(rn_seed)
         print(gen_story)
+
+
