@@ -3,7 +3,7 @@ import random
 ch_quality = ["considerate", "kind", "brave", "smart", "loyal"]
 incompatible_traits_map = {"considerate": ["bloodthirsty"], "smart": ["dumb"], "kind": ["bloodthirsty"]}
 ch_flaw = ["dumb", "bloodthirsty", "obnoxious", "know-it-all", "lunatic"]
-ch_profession = ["mercenary", "peasant", "blacksmith", "vagabond", "assassin", "barbarian"]
+ch_profession = ["mercenary", "peasant", "blacksmith", "vagabond", "assassin", "barbarian", "mercenary"]
 ch_goal = [f"kill the {random.choice(['king','queen'])}",
            "steal the Amulet of Destiny",
            "get magical powers",
@@ -15,6 +15,7 @@ ch_reason = ["repair $pr1 past mistakes",
              "avoid a prophecy",
              "avenge $pr1 family",
              "be rich",
+             "settle a debt",
              "win the admiration of the one $pr0 loves"]
 incompatible_reasons_map = {"settle in peace": ["become the hero of common folks",
                                                 "be rich",
@@ -23,6 +24,22 @@ incompatible_reasons_map = {"settle in peace": ["become the hero of common folks
                             }
 ch_sex = ["male", "female", "fluid"]
 pronouns_map = {"male": ("he", "his", "him"), "female": ("she", "her", "her"), "fluid": ("they", "their", "them")}
+
+quality_desc_map = {"considerate": ["taking care of the orphan of $pr1 sister"],
+                    "kind": ["teaching the kids of $pr1 village to fish"],
+                    "brave": ["hunting a wolf that attacked the animals of a nearby farmer"],
+                    "smart": ["building a dam on the nearby river to prevent spring flood"],
+                    "loyal": ["defending the mayor despite a scandal"]}
+
+flaw_desc_map = {"dumb": ["losing precious time doing things without thinking about the consequences"],
+                 "bloodthirsty": ["suppressing $pr1 urges for violence at the slightest frustration"],
+                 "obnoxious": ["shamelessly belittling people failing to meet $pr1 expectations"],
+                 "know-it-all": ["while antagonizing everyone with unhelpful pieces of advice"],
+                 "lunatic": ["though unexpected mood swings made $pr2 unpredictable."]}
+
+trigger_list = ["something"]
+
+first_step_list = ["starts $pr1 journey."]
 
 
 def get_incompatible_traits(trait_1_list, trait_2_list, incompatible_map):
@@ -60,10 +77,28 @@ def generate_story_sentence(seed=0):
     ant_profession = random.choice([profession for profession in ch_profession if profession != pro_profession])
     ant_reason = random.choice([reason for reason in ch_reason if reason != pro_reason])
     ant_reason = pronounify_sentence(ant_reason, ant_pronoun)
-    story = (f"A {pro_quality} but {pro_flaw} {pro_profession} "
-             f"wants to {pro_goal} to {pro_reason} "
-             f"but a {ant_flaw} {ant_profession} won't let {pro_pronoun[2]} do it "
-             f"because {ant_pronoun[0]} wants to {ant_reason}.")
+    premisse = (f"A {pro_quality} but {pro_flaw} {pro_profession} "
+                f"wants to {pro_goal} to {pro_reason} "
+                f"but a {ant_flaw} {ant_profession} won't let {pro_pronoun[2]} do it "
+                f"because {ant_pronoun[0]} wants to {ant_reason}.")
+    story = premisse
+
+    # Intro scene generation
+    normal_action = random.choice(quality_desc_map[pro_quality])
+    normal_action = pronounify_sentence(normal_action, pro_pronoun)
+    flaw_modifier = random.choice(flaw_desc_map[pro_flaw])
+    flaw_modifier = pronounify_sentence(flaw_modifier, pro_pronoun)
+    desc_normal = f"The {pro_profession} was {normal_action}, {flaw_modifier}. "
+    trigger = random.choice(trigger_list)
+    trigger = pronounify_sentence(trigger, pro_pronoun)
+    incident = f"Suddenly, {trigger} happened. "
+    first_step = random.choice(first_step_list)
+    first_step = pronounify_sentence(first_step, pro_pronoun)
+    lift_off = f"The {pro_profession} decided to {first_step}"
+    intro = desc_normal + incident + lift_off
+
+    # Concatenating the story elements
+    story += "\n" + intro
     return story
 
 
@@ -92,8 +127,7 @@ def generate_story_sentence(seed=0):
 """
 
 if __name__ == '__main__':
-    for rn_seed in range(0, 6):
+    for rn_seed in range(0, 10):
+        print("--------------")
         gen_story = generate_story_sentence(rn_seed)
         print(gen_story)
-
-
