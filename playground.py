@@ -4,7 +4,7 @@ ch_quality = ["considerate", "kind", "brave", "smart", "loyal"]
 incompatible_traits_map = {"considerate": ["bloodthirsty"], "smart": ["dumb"], "kind": ["bloodthirsty"]}
 ch_flaw = ["dumb", "bloodthirsty", "obnoxious", "know-it-all", "lunatic"]
 ch_profession = ["mercenary", "peasant", "blacksmith", "vagabond", "assassin", "barbarian"]
-ch_goal = ["kill the king",
+ch_goal = [f"kill the {random.choice(['king','queen'])}",
            "steal the Amulet of Destiny",
            "get magical powers",
            "restore the balance",
@@ -60,8 +60,8 @@ def generate_story_sentence(seed=0):
     ant_profession = random.choice([profession for profession in ch_profession if profession != pro_profession])
     ant_reason = random.choice([reason for reason in ch_reason if reason != pro_reason])
     ant_reason = pronounify_sentence(ant_reason, ant_pronoun)
-    story = (f"This is the story of a {pro_quality} but {pro_flaw} {pro_profession} "
-             f"who wants to {pro_goal} to {pro_reason} "
+    story = (f"A {pro_quality} but {pro_flaw} {pro_profession} "
+             f"wants to {pro_goal} to {pro_reason} "
              f"but a {ant_flaw} {ant_profession} won't let {pro_pronoun[2]} do it "
              f"because {ant_pronoun[0]} wants to {ant_reason}.")
     return story
