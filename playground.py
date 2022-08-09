@@ -1,71 +1,84 @@
 import random
+from characters import Character
 
 wd_important_figures = ['king', 'queen', 'emperor', "duke", "prince", "princess", "general"]
-wd_places = ['village', 'city', 'capital', 'desert oasis', 'forest', 'hideout', 'seaside', 'fortress']
-wd_place_quality = ['crowded', "isolated", "remote", "comfortable", "famished", "collapsing", "tenebrous"]
-wd_magic_objects = ["Amulet of Destiny", "Crown of Rulers", "Potions of Eternal Knowledge", "Diadem of True Wisdom",
-                    "Sword of Eternal Strength"]
 
-wd_keyword_map = {"$important_figure":wd_important_figures,
-                  "$magic_object": wd_magic_objects,
+wd_misc_figures = ["old woman", "giant", "thief", "orphan", "parents", "cook", "child", "witch", "brother", "sister",
+                   "monster", "fairy", "beggar", "old man", "husband", "wife", "shepperd", "stepmother"]
+
+wd_misc_animals = ["wolf", "frog", "horse", "bird"]
+
+wd_places = ['village', 'city', 'capital', 'desert oasis', 'forest', 'hideout', 'seaside', 'fortress', 'at sea', 'road',
+             'kingdom', 'ruins', 'stairs', 'church', 'palace', 'cottage', 'island', 'town', 'prison', 'tower', 'house',
+             'kitchen', 'cavern', 'in the mountain', 'alongside a river']
+
+wd_times = ["day", "night", "noon", "dusk", "dawn"]
+
+wd_place_quality = ['crowded', "isolated", "remote", "comfortable", "famished", "collapsing", "tenebrous"]
+
+obj_magic = ["Amulet of Destiny", "Crown of Rulers", "Potions of Eternal Knowledge", "Diadem of True Wisdom",
+             "Sword of Eternal Strength"]
+
+obj_misc = ["tome", "axe", "gift", "key", "ring", "food", "tree", "sword", "door", "window", "fire", "treasure",
+            "ship", "magic spell", "crown"]
+
+wd_keyword_map = {"$important_figure": wd_important_figures,
+                  "$magic_object": obj_magic,
                   "$place": wd_places,
-                  "$pl_quality": wd_place_quality}
+                  "$pl_quality": wd_place_quality,
+                  "$misc_object": obj_misc,
+                  "$misc_figure": wd_misc_figures,
+                  "$misc_animal": wd_misc_animals, }
 
 adj_suspense = ["mysterious", "strange", "innocuous", "unusual", "tight lipped"]
 adj_keyword_map = {"$suspense_adj": adj_suspense}
 
-ch_quality = ["considerate", "kind", "brave", "smart", "loyal"]
-incompatible_traits_map = {"considerate": ["bloodthirsty"], "smart": ["dumb"], "kind": ["bloodthirsty"]}
-ch_flaw = ["dumb", "bloodthirsty", "obnoxious", "know-it-all", "lunatic"]
-ch_profession = ["mercenary", "peasant", "blacksmith", "vagabond", "assassin", "barbarian", "mercenary"]
-ch_goal = [f"kill the $important_figure",
-           "steal the $magic_object",
-           "get magical powers",
-           "restore the balance",
-           "settle in peace"]
+adj_misc = [{"text": "ugly", "target": ["all"]},
+            {"text": "talking", "target": ["obj", "an"]},
+            {"text": "long lost", "target": ["all"]},
+            {"text": "happy", "target": ["ch", "an"]},
+            {"text": "disguised", "target": ["ch"]},
+            {"text": "asleep", "target": ["ch", "an"]},
+            {"text": "splendid", "target": ["all"]},
+            {"text": "blind", "target": ["ch", "an"]},
+            {"text": "hidden", "target": ["all"]},
+            {"text": "far away", "target": ["pl"]},
+            {"text": "poisonous", "target": ["obj", "an", "fd"]},
+            {"text": "lucky", "target": ["all"]},
+            {"text": "secret", "target": ["all"]},
+            {"text": "evil", "target": ["all"]},
+            {"text": "flying", "target": ["obj", "an"]},
+            {"text": "tiny", "target": ["all"]},
+            {"text": "cursed", "target": ["all"]},
+            {"text": "lost", "target": ["all"]},
+            {"text": "frightful", "target": ["ch", "an"]},
+            {"text": "secret", "target": ["ch", "an"]},
+            {"text": "stolen", "target": ["obj", "an"]},
+            {"text": "wise", "target": ["ch", "an"]},
+            {"text": "force of nature", "target": ["ch", "an"]},
+            {"text": "secret", "target": ["all"]}, ]
 
-ch_reason = ["repair $pr1 past mistakes",
-             "become the hero of common folks",
-             "achieve $pr1 destiny",
-             "avoid a prophecy",
-             "avenge $pr1 family",
-             "be rich",
-             "settle a debt",
-             "win the admiration of the one $pr0 loves"]
+evt_quality_descriptions = {"considerate": ["taking care of the orphan of $pr1 sister"],
+                            "kind": ["teaching the kids of $pr1 $place to fish"],
+                            "brave": ["hunting a wolf that attacked the animals of a nearby farmer"],
+                            "smart": ["building a dam on the nearby river to prevent spring flood"],
+                            "loyal": ["defending his best friend in $pr1 $pl_quality $place despite a scandal"]}
 
-incompatible_reasons_map = {"settle in peace": ["become the hero of common folks",
-                                                "be rich",
-                                                "avenge $pr1 family",
-                                                "achieve $pr1 destiny"],
-                            }
-ch_sex = ["male", "female", "fluid"]
-pronouns_map = {"male": ("he", "his", "him"), "female": ("she", "her", "her"), "fluid": ("they", "their", "them")}
+evt_flaw_descriptions = {"dumb": ["losing precious time doing things without thinking about the consequences"],
+                         "bloodthirsty": ["suppressing $pr1 urges for violence at the slightest frustration"],
+                         "obnoxious": ["shamelessly belittling people failing to meet $pr1 expectations"],
+                         "know-it-all": ["while antagonizing everyone with unhelpful pieces of advice"],
+                         "lunatic": ["though unexpected mood swings made $pr2 unpredictable"]}
 
-quality_desc_map = {"considerate": ["taking care of the orphan of $pr1 sister"],
-                    "kind": ["teaching the kids of $pr1 $place to fish"],
-                    "brave": ["hunting a wolf that attacked the animals of a nearby farmer"],
-                    "smart": ["building a dam on the nearby river to prevent spring flood"],
-                    "loyal": ["defending the mayor of $pr1 $pl_quality $place despite a scandal"]}
+evt_misc = ["rescue", "dream", "fight", "storm", "breakout", "death", "trap", "argument",
+            "love at first sight", "revelation", " meeting", "split up", "journey", "trial", "plan", "metamorphosis",
+            "chase"]
 
-flaw_desc_map = {"dumb": ["losing precious time doing things without thinking about the consequences"],
-                 "bloodthirsty": ["suppressing $pr1 urges for violence at the slightest frustration"],
-                 "obnoxious": ["shamelessly belittling people failing to meet $pr1 expectations"],
-                 "know-it-all": ["while antagonizing everyone with unhelpful pieces of advice"],
-                 "lunatic": ["though unexpected mood swings made $pr2 unpredictable"]}
+act_misc = ["breaking an object", "someone being hurt", "letting time goes by"]
 
-trigger_list = ["a flood occurred", "a $suspense_adj $ant_profession appeared"]
+evt_triggers = ["a flood occurred", "a $suspense_adj $ant_profession appeared"]
 
-first_step_list = ["starts $pr1 journey."]
-
-
-def get_incompatible_traits(trait_1_list, trait_2_list, incompatible_map):
-    trait_1 = random.choice(trait_1_list)
-    if trait_1 in incompatible_map.keys():
-        trait_2_compatible_list = [trait for trait in trait_2_list if trait not in incompatible_map[trait_1]]
-    else:
-        trait_2_compatible_list = trait_2_list
-    trait_2 = random.choice(trait_2_compatible_list)
-    return trait_1, trait_2
+evt_first_steps = ["starts $pr1 journey."]
 
 
 def pronounify_sentence(sentence, ch_pronouns_map):
@@ -85,43 +98,40 @@ def replace_keywords_from_sentence(sentence, keyword_maps):
 
 def generate_story_sentence(seed=0):
     random.seed(seed)
-
     # Protagonist description
-    pro_sex = random.choice(ch_sex)
-    pro_pronoun = pronouns_map[pro_sex]
-    pro_quality, pro_flaw = get_incompatible_traits(ch_quality, ch_flaw, incompatible_traits_map)
-    pro_profession = random.choice(ch_profession)
-    pro_goal, pro_reason = get_incompatible_traits(ch_goal, ch_reason, incompatible_reasons_map)
-    pro_goal = pronounify_sentence(pro_goal, pro_pronoun)
-    pro_reason = pronounify_sentence(pro_reason, pro_pronoun)
+    protagonist = Character(seed)
+
     # Antagonist description
-    ant_sex = random.choice(ch_sex)
-    ant_pronoun = pronouns_map[ant_sex]
-    ant_flaw = random.choice([flaw for flaw in ch_flaw if flaw != pro_flaw])
-    ant_profession = random.choice([profession for profession in ch_profession if profession != pro_profession])
-    ant_reason = random.choice([reason for reason in ch_reason if reason != pro_reason])
+    antagonist = Character(seed+42)
+    antagonist.antagonize(protagonist)
+    ant_pronoun = antagonist.pronouns
+    ant_flaw = antagonist.flaw
+    ant_profession = antagonist.profession
+    ant_reason = antagonist.reason
     ant_reason = pronounify_sentence(ant_reason, ant_pronoun)
     ch_keyword_map = {"$ant_profession": [ant_profession]}
     keyword_maps = [wd_keyword_map, adj_keyword_map, ch_keyword_map]
 
-    premisse = (f"A {pro_quality} but {pro_flaw} {pro_profession} "
-                f"wants to {pro_goal} to {pro_reason} "
-                f"but a {ant_flaw} {ant_profession} won't let {pro_pronoun[2]} do it "
-                f"because {ant_pronoun[0]} wants to {ant_reason}.")
+    premisse = (f"A {protagonist.quality} but {protagonist.flaw} {protagonist.profession} "
+                f"wants to {pronounify_sentence(protagonist.goal, protagonist.pronouns)} "
+                f"to {pronounify_sentence(protagonist.reason,protagonist.pronouns)} "
+                f"but a {antagonist.flaw} {antagonist.profession} won't let {protagonist.pronouns[2]} do it "
+                f"because {antagonist.pronouns[0]} wants "
+                f"to {pronounify_sentence(antagonist.reason, antagonist.pronouns)}.")
     premisse = replace_keywords_from_sentence(premisse, keyword_maps)
     story = premisse
 
     # Intro scene generation
-    normal_action = random.choice(quality_desc_map[pro_quality])
-    normal_action = pronounify_sentence(normal_action, pro_pronoun)
-    flaw_modifier = random.choice(flaw_desc_map[pro_flaw])
-    flaw_modifier = pronounify_sentence(flaw_modifier, pro_pronoun)
-    desc_normal = f"The {pro_profession} was {normal_action}, {flaw_modifier}. "
-    trigger = random.choice(trigger_list)
+    normal_action = random.choice(evt_quality_descriptions[protagonist.quality])
+    normal_action = pronounify_sentence(normal_action, protagonist.pronouns)
+    flaw_modifier = random.choice(evt_flaw_descriptions[protagonist.flaw])
+    flaw_modifier = pronounify_sentence(flaw_modifier, protagonist.pronouns)
+    desc_normal = f"The {protagonist.profession} was {normal_action}, {flaw_modifier}. "
+    trigger = random.choice(evt_triggers)
     incident = f"Suddenly, {trigger}. "
-    first_step = random.choice(first_step_list)
-    first_step = pronounify_sentence(first_step, pro_pronoun)
-    lift_off = f"The {pro_profession} decided to {first_step}"
+    first_step = random.choice(evt_first_steps)
+    first_step = pronounify_sentence(first_step, protagonist.pronouns)
+    lift_off = f"The {protagonist.profession} decided to {first_step}"
     intro = desc_normal + incident + lift_off
     intro = replace_keywords_from_sentence(intro, keyword_maps)
     # Concatenating the story elements
@@ -155,7 +165,7 @@ def generate_story_sentence(seed=0):
 """
 
 if __name__ == '__main__':
-    for rn_seed in range(0, 10):
+    for rn_seed in range(0, 2):
         print("--------------")
         gen_story = generate_story_sentence(rn_seed)
         print(gen_story)
