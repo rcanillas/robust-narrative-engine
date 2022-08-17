@@ -1,6 +1,5 @@
 import random
 
-# TODO: define Entity class with type ?
 
 ch_quality = ["considerate", "kind", "brave", "smart", "loyal"]
 ch_flaw = ["dumb", "bloodthirsty", "obnoxious", "know-it-all", "lunatic"]
