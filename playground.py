@@ -28,7 +28,7 @@ wd_keyword_map = {"$important_figure": wd_important_figures,
                   "$pl_quality": wd_place_quality,
                   "$misc_object": obj_misc,
                   "$misc_figure": wd_misc_figures,
-                  "$misc_animal": wd_misc_animals, }
+                  "$misc_animal": wd_misc_animals,}
 
 adj_suspense = ["mysterious", "strange", "innocuous", "unusual", "tight lipped"]
 adj_keyword_map = {"$suspense_adj": adj_suspense}
@@ -70,21 +70,31 @@ evt_flaw_descriptions = {"dumb": ["losing precious time doing things without thi
                          "know-it-all": ["while antagonizing everyone with unhelpful pieces of advice"],
                          "lunatic": ["though unexpected mood swings made $pr2 unpredictable"]}
 
-evt_misc = ["rescue", "dream", "fight", "storm", "breakout", "death", "trap", "argument",
+evt_misc = ["rescue", "dream", "fight", "storm", "breakout", "death", "trap", "bad argument",
             "love at first sight", "revelation", " meeting", "split up", "journey", "trial", "plan", "metamorphosis",
             "chase"]
 
-act_misc = ["breaking an object", "someone being hurt", "letting time goes by"]
+act_misc = ["%pr_object %object is broken", "%character is hurt", "time goes by for a while"]
 
-evt_triggers = ["a flood occurred", "a $suspense_adj $ant_profession appeared"]
+evt_keywords_map = {"$misc_event": evt_misc}
+
+evt_triggers = {"repair $pr1 past mistakes": ["One day, a $misc_figure appeared and asked for the $pr_profession. He was bringing news from an old friend that the $pr_profession betrayed long ago to avoid a dire condamnation."],
+                "become the hero of common folks": ["As usual, the guardsmen were roughing up an innocent $misc_figure right there on the street. Bolstered by the protection of the $important_figure, they believed they could get away with anything."],
+                "achieve $pr1 destiny": ["When $pr0 was young, a seer told the $ch_profession that $pr2 were headed toward greatness, and that the $misc_animals would be the sign to become what $pr0 was truly meant to be. Disbelieving at first, the $pr_profession was not so certain when $pr0 found a wounded $misc_animal at $pr1 doorstep."],
+                "avoid a prophecy": ["The stench of bad omens was clinging to the $pr_profession since $pr0 disturbed an old wizard in a ruined $place. 'A $misc_event awaits you', the priest said, 'and you better be ready to face it, or risk a fate worth than death'."],
+                "avenge $pr1 family": ["But at night, there was nothing to keep the nightmares at bay. The smell of the fire in the $place, the screams of $pr1 family getting caught, the laughter of the mercenaries. There was only one thing that could make the nightmares stop. Justice."],
+                "be rich": ["The $pr_profession stops for a moment as a rich $important_figure travel through the $place. Such finery, such comfort, while the $pr_profession has to work all day to earn scraps and leftovers. 'Not anymore', $pr0 thinks."],
+                "settle a debt": ["Some say there is no price for a life. Well, they never met the $pr_profession, because he promised a hefty sum to one important $important_figure, and judging by the soldiers at $pr1 doorstep, the time had come to collect."],
+                "win the admiration of the one $pr0 loves": ["After a good day of work, what is nicer than to find the warmth of a loving embrace ? For the $pr_profession, nothing. This why $pr0 had to convince the one $pr0 loved that $pr1 intention were serious."]}
 
 evt_first_steps = ["starts $pr1 journey."]
 
 
-def pronounify_sentence(sentence, ch_pronouns_map):
-    sentence = sentence.replace("$pr0", ch_pronouns_map[0])
-    sentence = sentence.replace("$pr1", ch_pronouns_map[1])
-    sentence = sentence.replace("$pr2", ch_pronouns_map[2])
+def characterize_sentence(sentence, character):
+    sentence = sentence.replace("$pr0", character.pronouns[0])
+    sentence = sentence.replace("$pr1", character.pronouns[1])
+    sentence = sentence.replace("$pr2", character.pronouns[2])
+    sentence = sentence.replace("$pr_profession", character.profession)
     return sentence
 
 
@@ -108,29 +118,29 @@ def generate_story_sentence(seed=0):
     ant_flaw = antagonist.flaw
     ant_profession = antagonist.profession
     ant_reason = antagonist.reason
-    ant_reason = pronounify_sentence(ant_reason, ant_pronoun)
+    ant_reason = characterize_sentence(ant_reason, antagonist)
     ch_keyword_map = {"$ant_profession": [ant_profession]}
-    keyword_maps = [wd_keyword_map, adj_keyword_map, ch_keyword_map]
+    keyword_maps = [wd_keyword_map, adj_keyword_map, ch_keyword_map, evt_keywords_map]
 
     premisse = (f"A {protagonist.quality} but {protagonist.flaw} {protagonist.profession} "
-                f"wants to {pronounify_sentence(protagonist.goal, protagonist.pronouns)} "
-                f"to {pronounify_sentence(protagonist.reason,protagonist.pronouns)} "
+                f"wants to {characterize_sentence(protagonist.goal, protagonist)} "
+                f"to {characterize_sentence(protagonist.reason,protagonist)} "
                 f"but a {antagonist.flaw} {antagonist.profession} won't let {protagonist.pronouns[2]} do it "
                 f"because {antagonist.pronouns[0]} wants "
-                f"to {pronounify_sentence(antagonist.reason, antagonist.pronouns)}.")
+                f"to {characterize_sentence(antagonist.reason, antagonist)}.")
     premisse = replace_keywords_from_sentence(premisse, keyword_maps)
     story = premisse
 
     # Intro scene generation
     normal_action = random.choice(evt_quality_descriptions[protagonist.quality])
-    normal_action = pronounify_sentence(normal_action, protagonist.pronouns)
+    normal_action = characterize_sentence(normal_action, protagonist)
     flaw_modifier = random.choice(evt_flaw_descriptions[protagonist.flaw])
-    flaw_modifier = pronounify_sentence(flaw_modifier, protagonist.pronouns)
+    flaw_modifier = characterize_sentence(flaw_modifier, protagonist)
     desc_normal = f"The {protagonist.profession} was {normal_action}, {flaw_modifier}. "
-    trigger = random.choice(evt_triggers)
-    incident = f"Suddenly, {trigger}. "
+    trigger = random.choice(evt_triggers[protagonist.reason])
+    incident = characterize_sentence(trigger, protagonist) + " "
     first_step = random.choice(evt_first_steps)
-    first_step = pronounify_sentence(first_step, protagonist.pronouns)
+    first_step = characterize_sentence(first_step, protagonist)
     lift_off = f"The {protagonist.profession} decided to {first_step}"
     intro = desc_normal + incident + lift_off
     intro = replace_keywords_from_sentence(intro, keyword_maps)
@@ -165,7 +175,7 @@ def generate_story_sentence(seed=0):
 """
 
 if __name__ == '__main__':
-    for rn_seed in range(0, 2):
+    for rn_seed in range(0, 5):
         print("--------------")
         gen_story = generate_story_sentence(rn_seed)
         print(gen_story)

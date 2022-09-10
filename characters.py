@@ -83,7 +83,7 @@ class Character:
         quality_seed = 1
         while character.flaw == self.flaw or character.quality == self.quality:
             random.seed(self.seed + quality_seed)
-            self.flaw, self.quality = get_compatible_traits(ch_quality, ch_flaw, incompatible_traits_map)
+            self.quality, self.flaw = get_compatible_traits(ch_quality, ch_flaw, incompatible_traits_map)
             quality_seed += 1
 
         profession_seed = 1
@@ -93,7 +93,7 @@ class Character:
             profession_seed += 1
 
         goal_seed = 1
-        while character.goal == self.goal and character.reason == self.reason:
+        while character.goal == self.goal or character.reason == self.reason:
             random.seed(self.seed + goal_seed)
             self.goal, self.reason = get_compatible_traits(ch_goal, ch_reason, incompatible_reasons_map)
             goal_seed += 1
