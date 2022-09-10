@@ -58,17 +58,6 @@ adj_misc = [{"text": "ugly", "target": ["all"]},
             {"text": "force of nature", "target": ["ch", "an"]},
             {"text": "secret", "target": ["all"]}, ]
 
-evt_quality_descriptions = {"considerate": ["taking care of the orphan of $pr1 sister"],
-                            "kind": ["teaching the kids of $pr1 $place to fish"],
-                            "brave": ["hunting a wolf that attacked the animals of a nearby farmer"],
-                            "smart": ["building a dam on the nearby river to prevent spring flood"],
-                            "loyal": ["defending his best friend in $pr1 $pl_quality $place despite a scandal"]}
-
-evt_flaw_descriptions = {"dumb": ["losing precious time doing things without thinking about the consequences"],
-                         "bloodthirsty": ["suppressing $pr1 urges for violence at the slightest frustration"],
-                         "obnoxious": ["shamelessly belittling people failing to meet $pr1 expectations"],
-                         "know-it-all": ["while antagonizing everyone with unhelpful pieces of advice"],
-                         "lunatic": ["though unexpected mood swings made $pr2 unpredictable"]}
 
 evt_misc = ["rescue", "dream", "fight", "storm", "breakout", "death", "trap", "argument",
             "love at first sight", "revelation", " meeting", "split up", "journey", "trial", "plan", "metamorphosis",
